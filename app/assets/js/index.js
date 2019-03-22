@@ -26,3 +26,16 @@ links.forEach((link, index) => link.addEventListener("click", e => {
     e.preventDefault();
     getContent(e.target.dataset.src)
 }))
+
+
+const items = document.querySelectorAll(".item");
+const random = (min,max)=>Math.round(Math.random() * (max - min) + min);
+const setActiveItem = ()=>{
+    items.forEach((item,index)=>{
+     item.classList.remove('show');
+     if(index==random(0,items.length-1)){
+       item.classList.add('show');    
+     }
+    })
+  }
+  setInterval(()=>setActiveItem(),1000);

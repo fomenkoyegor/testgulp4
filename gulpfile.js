@@ -43,7 +43,7 @@ const style = () => src(styleSrc)
     .pipe(sass().on("error", sass.logError))
     .pipe(concat(styleName))
     .pipe(autoprefixer({
-        browsers: ['last 5 versions', '> 1%', 'ie 8', 'ie 7'],
+        browsers: ['last 5 versions', '> 0.1%', 'ie 8', 'ie 7'],
         cascade: false
     }))
     .pipe(cleanCSS({ level: 2 }))
