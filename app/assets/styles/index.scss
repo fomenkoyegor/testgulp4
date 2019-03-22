@@ -6,5 +6,11 @@ body{
    a{
       color: #000;
       background: red; 
+      box-shadow: 5px 5px 5px black;
    }
+}
+
+div>row{
+   background: gray; 
+   display: flex; 
 }
