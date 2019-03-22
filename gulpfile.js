@@ -5,13 +5,21 @@ const concat = require("gulp-concat");
 const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css');
 const babel = require("gulp-babel");
-const { src, dest, task, parallel, watch } = require("gulp");
+const del = require("del");
+const { src, dest, task, parallel, watch, series } = require("gulp");
 const dir = { src: "./app/", dest: "./dist/" }
 
 const htmlSrc = `${dir.src}*.html`;
 const htmlDest = dir.dest;
 const copyHtml = () => src(htmlSrc).pipe(dest(htmlDest));
 task("copyHtml", copyHtml);
+
+const staticSrc = `${dir.src}static/**/*`;
+const staticDest = `${dir.dest}static/`;
+const copyStatic = () => src(staticSrc).pipe(dest(staticDest));
+task("copyStatic", copyStatic);
+
+
 
 const imagesSrc = `${dir.src}assets/images/*`;
 const imagesDest = `${dir.dest}assets/images/`;
@@ -47,10 +55,25 @@ const watchFiles = () => {
     watch(styleSrc, style);
     watch(htmlSrc, copyHtml);
     watch(imagesSrc, imageMin);
+    watch(staticSrc, copyStatic);
 }
 
-task('default', parallel(['copyHtml', 'imageMin', 'style', 'scripts']));
+const clean = () => del([`${dir.dest}*`]);
+task("clean", clean);
+
+task('default', parallel(
+    [
+        'copyStatic',
+        'copyHtml',
+        'imageMin',
+        'style',
+        'scripts'
+    ]
+));
 task("watch", watchFiles);
 
+task("build", series("clean", "default"));
+
+task("dev", series("build", "watch"));
 
 
