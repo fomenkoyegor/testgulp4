@@ -1,4 +1,55 @@
-@import './vars';
-body{
-   background: $pimary;
+@import './cancel';
+
+.container{
+   width: 80%;
+   margin: 0 auto;
+}
+
+header{
+   background: rgba(0,0,0,0.8);
+   nav{
+      ul{
+         display: flex;
+         justify-content: space-around;
+         li{
+            padding: 10px;
+            a{
+               color: white;
+               padding: 5px;
+               border-bottom: 2px solid transparent;
+               transition:all 0.4s;
+               &.active,&:hover{
+                  border-bottom: 2px solid red;
+               }
+            }
+
+         }
+      }
+   }
+}
+
+
+main{
+   height: 85vh;
+   overflow-y: scroll;
+   &.show{
+      animation: show 1s linear
+   }
+   .content{
+      &-main{
+         column-count: 3;
+      }
+      &-about{
+         column-count: 6
+      }
+      &-contact{
+         column-count: 2;
+      }
+   }
+}
+
+@keyframes show{
+   from{
+      opacity: 0;
+   }
 }
