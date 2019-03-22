@@ -17,7 +17,7 @@ task("imageMin", imageMin);
 const scriptSrc = "./app/assets/js/*.js";
 const scriptDest = "./dist/assets/js/";
 const scriptName = "main.js";
-const scripts = () => src(scriptSrc).pipe(uglify(scriptName)).pipe(dest(scriptDest));
+const scripts = () => src(scriptSrc).pipe(concat(scriptName)).pipe(uglify()).pipe(dest(scriptDest));
 task("scripts", scripts);
 
 const styleSrc = "./app/assets/styles/**/*.scss";
