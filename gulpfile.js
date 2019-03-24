@@ -7,8 +7,28 @@ const cleanCSS = require('gulp-clean-css');
 const babel = require("gulp-babel");
 const del = require("del");
 const browserSync = require('browser-sync').create();
+const webpack = require('webpack-stream');
+var compiler = require('webpack');
 const { src, dest, task, parallel, watch, series } = require("gulp");
-const dir = { src: "./app/", dest: "./dist/" }
+const dir = { src: "./app/", dest: "./dist/" };
+const isDev = true;
+const isProd = !isDev;
+const webpackConfig = {
+    
+    output:{
+        filename:"main.js"
+    },
+    module:{
+        rules:[
+            {
+                test:/\.js$/,
+                loader:"babel-loader",
+                exclude:"/node_modules"
+            }
+        ]
+    },
+    mode: isDev ? 'development' : 'production'
+}
 
 const htmlSrc = `${dir.src}*.html`;
 const htmlDest = dir.dest;
@@ -29,9 +49,7 @@ const scriptSrc = `${dir.src}assets/js/*.js`;
 const scriptDest = `${dir.dest}assets/js/`;
 const scriptName = "main.js";
 const scripts = () => src(scriptSrc)
-    .pipe(babel())
-    .pipe(concat(scriptName))
-    .pipe(uglify())
+    .pipe(webpack(webpackConfig))
     .pipe(dest(scriptDest))
     .pipe(browserSync.stream());
 task("scripts", scripts);
@@ -56,6 +74,7 @@ const watchFiles = () => {
         server: {
             baseDir: dir.dest
         },
+        open:false
     });
     watch(scriptSrc, scripts);
     watch(styleSrc, style);
